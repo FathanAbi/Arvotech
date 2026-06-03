@@ -117,5 +117,149 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+<footer class="bg-gray-900 text-gray-300 mt-16">
+    <div class="max-w-7xl mx-auto px-6 py-12">
+
+        <div class="grid md:grid-cols-4 gap-8">
+
+            <!-- Tentang -->
+            <div>
+                <h3 class="text-lg font-bold text-white mb-4">
+                    UMKM Surabaya
+                </h3>
+
+                <p class="text-sm leading-relaxed">
+                    Platform digital untuk membantu promosi
+                    dan pengembangan usaha mikro, kecil,
+                    dan menengah di wilayah Surabaya.
+                </p>
+            </div>
+
+            <!-- Navigasi -->
+            <div>
+                <h3 class="text-lg font-bold text-white mb-4">
+                    Navigasi
+                </h3>
+
+                <ul class="space-y-2">
+                    <li>
+                        <a href="/"
+                           class="hover:text-orange-400">
+                            Beranda
+                        </a>
+                    </li>
+
+                   
+                </ul>
+            </div>
+
+            <!-- Bantuan -->
+            <div>
+                <h3 class="text-lg font-bold text-white mb-4">
+                    Bantuan
+                </h3>
+
+                <ul class="space-y-2">
+                    <li>
+                        <a href="{{ url('/helpdesk') }}"
+                           class="hover:text-orange-400">
+                            Helpdesk
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('helpdesk.search.form') }}"
+                        class="hover:text-orange-400">
+                            Lacak Tiket
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('feedback.create') }}"
+                        class="hover:text-orange-400">
+                            Kritik & Saran
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#"
+                           class="hover:text-orange-400">
+                            FAQ
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#"
+                           class="hover:text-orange-400">
+                            Kebijakan Privasi
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#"
+                           class="hover:text-orange-400">
+                            Syarat & Ketentuan
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Kontak -->
+            <div>
+                <h3 class="text-lg font-bold text-white mb-4">
+                    Kontak
+                </h3>
+
+                <ul class="space-y-2 text-sm">
+                    <li>
+                        📍 Surabaya, Jawa Timur
+                    </li>
+
+                    <li>
+                        📞 (031) 12345678
+                    </li>
+
+                    <li>
+                        ✉️ info@umkm-surabaya.com
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <hr class="border-gray-700 my-8">
+
+        <div class="flex flex-col md:flex-row justify-between items-center">
+
+            <p class="text-sm">
+                © {{ date('Y') }}
+                UMKM Surabaya.
+                Seluruh Hak Cipta Dilindungi.
+            </p>
+
+            <div class="flex gap-4 mt-4 md:mt-0">
+
+                <a href="#"
+                   class="hover:text-orange-400">
+                    Facebook
+                </a>
+
+                <a href="#"
+                   class="hover:text-orange-400">
+                    Instagram
+                </a>
+
+                <a href="#"
+                   class="hover:text-orange-400">
+                    WhatsApp
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+</footer>
+
 </body>
 </html>

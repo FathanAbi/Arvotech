@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 
 use App\Http\Controllers\FeedbackController;
-use App\Http\Controllers\HelpdeskController;
+
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CateringController;
 
@@ -14,6 +14,10 @@ use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\CateringPackageController;
 use App\Http\Controllers\OrderTrackingController;
+
+use App\Http\Controllers\HelpdeskController;
+use App\Http\Controllers\Admin\HelpdeskController as AdminHelpdeskController;
+use App\Http\Controllers\Admin\FeedbackController as AdminFeedbackController;
 
 Route::get('/', [HomeController::class, 'index']);
 
@@ -44,12 +48,65 @@ Route::post(
     [OrderTrackingController::class, 'search']
 )->name('orders.track.search');
 
-Route::post('/helpdesk',
-    [HelpdeskController::class, 'store']);
+Route::get(
+    '/helpdesk',
+    [HelpdeskController::class, 'create']
+);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::post(
+    '/helpdesk',
+    [HelpdeskController::class, 'store']
+);
+
+Route::get(
+    '/helpdesk/search',
+    [HelpdeskController::class, 'searchForm']
+)->name('helpdesk.search.form');
+
+Route::post(
+    '/helpdesk/search',
+    [HelpdeskController::class, 'search']
+)->name('helpdesk.search');
+
+Route::get(
+    '/helpdesk/{ticket}',
+    [HelpdeskController::class, 'show']
+)->name('helpdesk.show');
+
+Route::post(
+    '/helpdesk/{ticket}/reply',
+    [HelpdeskController::class, 'reply']
+);
+
+Route::get(
+    '/helpdesk/{ticket}',
+    [HelpdeskController::class, 'show']
+)->name('helpdesk.show');
+
+Route::post(
+    '/helpdesk/{ticket}/reply',
+    [HelpdeskController::class, 'reply']
+);
+
+Route::get(
+    '/feedback',
+    [FeedbackController::class, 'create']
+)->name('feedback.create');
+
+Route::post(
+    '/feedback',
+    [FeedbackController::class, 'store']
+)->name('feedback.store');
+
+Route::middleware(['auth', 'verified'])
+    ->prefix('admin')
+    ->group(function () {
+
+        Route::get('/dashboard', function () {
+            return view('admin.dashboard');
+        })->name('admin.dashboard');
+
+    });
 
 Route::middleware(['auth', 'admin'])
     ->prefix('admin')
@@ -73,8 +130,6 @@ Route::middleware(['auth', 'admin'])
         );
     });
 
-
-
 Route::prefix('admin')
     ->middleware(['auth', 'admin'])
     ->name('admin.')
@@ -95,5 +150,46 @@ Route::prefix('admin')
             [AdminOrderController::class, 'updateStatus']
         )->name('orders.status');
     });
+
+Route::middleware('auth')
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+        Route::get(
+            '/helpdesk',
+            [AdminHelpdeskController::class, 'index']
+        )->name('helpdesk.index');
+
+        Route::get(
+            '/helpdesk/{id}',
+            [AdminHelpdeskController::class, 'show']
+        )->name('helpdesk.show');
+
+        Route::post(
+            '/helpdesk/{id}/reply',
+            [AdminHelpdeskController::class, 'reply']
+        )->name('helpdesk.reply');
+
+    });
+
+Route::middleware('auth')
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+        Route::get(
+            '/feedback',
+            [AdminFeedbackController::class, 'index']
+        )->name('feedback.index');
+
+        Route::get(
+            '/feedback/{id}',
+            [AdminFeedbackController::class, 'show']
+        )->name('feedback.show');
+
+    });
+
+    
 
 require __DIR__.'/auth.php';

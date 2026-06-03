@@ -230,6 +230,83 @@
 
             </a>
 
+            <a
+                href="{{ route('admin.helpdesk.index') }}"
+                class="group bg-white dark:bg-gray-800
+                    border border-gray-200 dark:border-gray-700
+                    rounded-2xl p-6 shadow-sm
+                    hover:shadow-lg transition">
+
+                <div class="flex items-center gap-4">
+
+                    <div
+                        class="h-14 w-14 rounded-xl
+                            bg-purple-100 dark:bg-purple-500/20
+                            flex items-center justify-center
+                            text-2xl">
+
+                        🎫
+
+                    </div>
+
+                    <div>
+
+                        <h3
+                            class="text-lg font-bold
+                                text-gray-900 dark:text-white">
+
+                            Helpdesk Tiket
+
+                        </h3>
+
+                        <p
+                            class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+
+                            Kelola tiket bantuan, balas pertanyaan pengguna, dan pantau status layanan.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+            <a
+                href="{{ route('admin.feedback.index') }}"
+                class="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-sm hover:shadow-lg transition">
+
+                <div class="flex items-center gap-4">
+
+                    <div
+                        class="h-14 w-14 rounded-xl bg-yellow-100 dark:bg-yellow-500/20 flex items-center justify-center text-2xl">
+
+                        💡
+
+                    </div>
+
+                    <div>
+
+                        <h3
+                            class="text-lg font-bold text-gray-900 dark:text-white">
+
+                            Kritik & Saran
+
+                        </h3>
+
+                        <p
+                            class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+
+                            Kelola masukan dan evaluasi dari pengguna.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
         </div>
 
     </div>

@@ -7,17 +7,29 @@ use Illuminate\Http\Request;
 
 class FeedbackController extends Controller
 {
+    public function create()
+    {
+        return view('feedback.create');
+    }
+
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required',
-            'rating' => 'required|integer|min:1|max:5',
+            'category' => 'required',
             'message' => 'required'
         ]);
 
-        Feedback::create($request->all());
+        Feedback::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'category' => $request->category,
+            'message' => $request->message
+        ]);
 
-        return back()
-            ->with('success', 'Terima kasih atas masukan Anda');
+        return back()->with(
+            'success',
+            'Terima kasih atas kritik dan saran Anda.'
+        );
     }
 }
