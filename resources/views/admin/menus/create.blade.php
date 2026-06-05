@@ -19,6 +19,7 @@
     <form
         action="{{ route('admin.menus.store') }}"
         method="POST"
+        enctype="multipart/form-data"
         class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-8 rounded-2xl shadow-sm">
 
         @csrf
@@ -108,6 +109,39 @@
                        focus:border-orange-500">
 
             @error('harga')
+                <p class="mt-2 text-sm text-red-500">
+                    {{ $message }}
+                </p>
+            @enderror
+
+        </div>
+
+        <!-- Foto Menu -->
+        <div class="mb-8">
+
+            <label
+                for="foto"
+                class="block mb-2 font-medium text-gray-700 dark:text-gray-300">
+
+                Foto Menu
+
+            </label>
+
+            <input
+                id="foto"
+                type="file"
+                name="foto"
+                accept="image/*"
+                class="w-full rounded-lg border border-gray-300 dark:border-gray-600
+                    bg-white dark:bg-gray-700
+                    text-gray-900 dark:text-white
+                    px-4 py-3">
+
+            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                Format: JPG, PNG, WEBP. Maksimal 2MB.
+            </p>
+
+            @error('foto')
                 <p class="mt-2 text-sm text-red-500">
                     {{ $message }}
                 </p>

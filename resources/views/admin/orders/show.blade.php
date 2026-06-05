@@ -135,6 +135,61 @@
 
     </div>
 
+    <!-- Bukti Transfer -->
+    <div
+        class="mt-6 bg-white dark:bg-gray-800
+            border border-gray-200 dark:border-gray-700
+            rounded-2xl shadow-sm p-6">
+
+        <h2
+            class="text-xl font-bold mb-6
+                text-gray-900 dark:text-white">
+
+            Bukti Pembayaran
+
+        </h2>
+
+        @if($order->payment_proof)
+
+            <div class="space-y-4">
+
+                <img
+                    src="{{ asset('storage/' . $order->payment_proof) }}"
+                    alt="Bukti Pembayaran"
+                    class="max-w-xl rounded-xl border border-gray-200 dark:border-gray-700 shadow">
+
+                <a
+                    href="{{ asset('storage/' . $order->payment_proof) }}"
+                    target="_blank"
+                    class="inline-flex items-center px-4 py-2
+                        bg-blue-600 hover:bg-blue-700
+                        text-white rounded-lg">
+
+                    Lihat Ukuran Penuh
+
+                </a>
+
+            </div>
+
+        @else
+
+            <div
+                class="bg-yellow-50 dark:bg-yellow-900/20
+                    border border-yellow-200 dark:border-yellow-700
+                    rounded-xl p-4">
+
+                <p class="text-yellow-700 dark:text-yellow-300">
+
+                    Pelanggan belum mengunggah bukti pembayaran.
+
+                </p>
+
+            </div>
+
+        @endif
+
+    </div>
+
     <!-- Update Status -->
     <div
         class="mt-6 bg-white dark:bg-gray-800

@@ -86,17 +86,17 @@
 
                 <div
                     class="bg-white dark:bg-gray-800
-                           border border-gray-200 dark:border-gray-700
-                           rounded-2xl p-6">
+                        border border-gray-200 dark:border-gray-700
+                        rounded-2xl p-6">
 
                     <div
-                        class="flex justify-between items-start">
+                        class="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
 
                         <div>
 
                             <h3
                                 class="font-bold text-lg
-                                       text-gray-900 dark:text-white">
+                                    text-gray-900 dark:text-white">
 
                                 {{ $order->invoice_number }}
 
@@ -111,7 +111,7 @@
 
                             <p
                                 class="mt-2 text-sm
-                                       text-gray-500 dark:text-gray-400">
+                                    text-gray-500 dark:text-gray-400">
 
                                 Paket:
                                 {{ $order->package->nama_paket }}
@@ -120,7 +120,7 @@
 
                             <p
                                 class="text-sm
-                                       text-gray-500 dark:text-gray-400">
+                                    text-gray-500 dark:text-gray-400">
 
                                 Total:
                                 Rp {{ number_format($order->total_price) }}
@@ -129,12 +129,26 @@
 
                         </div>
 
-                        <span
-                            class="px-3 py-1 rounded-full text-sm {{ $badge }}">
+                        <div class="flex flex-col items-end gap-3">
 
-                            {{ ucwords(str_replace('_',' ', $order->status)) }}
+                            <span
+                                class="px-3 py-1 rounded-full text-sm {{ $badge }}">
 
-                        </span>
+                                {{ ucwords(str_replace('_',' ', $order->status)) }}
+
+                            </span>
+
+                            <a
+                                href="{{ url('/orders/'.$order->id) }}"
+                                class="bg-orange-500 hover:bg-orange-600
+                                    text-white px-4 py-2 rounded-lg
+                                    text-sm font-medium transition">
+
+                                Lihat Detail
+
+                            </a>
+
+                        </div>
 
                     </div>
 

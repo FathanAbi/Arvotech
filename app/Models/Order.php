@@ -17,7 +17,8 @@ class Order extends Model
         'package_id',
         'quantity',
         'total_price',
-        'status'
+        'status',
+        'payment_proof'
     ];
 
     public function package()

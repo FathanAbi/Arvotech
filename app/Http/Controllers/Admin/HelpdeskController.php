@@ -47,4 +47,24 @@ class HelpdeskController extends Controller
 
         return back();
     }
+
+    public function close($id)
+    {
+        $ticket = HelpdeskTicket::findOrFail($id);
+
+        HelpdeskMessage::create([
+            'helpdesk_ticket_id' => $ticket->id,
+            'sender' => 'admin',
+            'message' => '[SISTEM] Tiket telah ditutup oleh admin.'
+        ]);
+
+        $ticket->update([
+            'status' => 'closed'
+        ]);
+
+        return back()->with(
+            'success',
+            'Tiket berhasil ditutup.'
+        );
+    }
 }

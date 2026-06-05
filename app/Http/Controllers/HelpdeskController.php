@@ -60,12 +60,31 @@ class HelpdeskController extends Controller
         );
     }
 
-    public function reply(Request $request, $ticketNumber)
-    {
+    public function reply(
+        Request $request,
+        $ticketNumber
+    ) {
         $ticket = HelpdeskTicket::where(
             'ticket_number',
             $ticketNumber
         )->firstOrFail();
+
+        // Tidak boleh membalas tiket yang sudah ditutup
+        if ($ticket->status === 'closed') {
+
+            return back()->with(
+                'error',
+                'Tiket telah ditutup dan tidak dapat menerima balasan baru.'
+            );
+        }
+
+        $request->validate([
+            'message' => [
+                'required',
+                'string',
+                'max:5000'
+            ]
+        ]);
 
         HelpdeskMessage::create([
             'helpdesk_ticket_id' => $ticket->id,
@@ -73,7 +92,19 @@ class HelpdeskController extends Controller
             'message' => $request->message
         ]);
 
-        return back();
+        // Jika sebelumnya sudah dijawab admin,
+        // ubah kembali menjadi open karena user memberikan tanggapan baru
+        if ($ticket->status === 'answered') {
+
+            $ticket->update([
+                'status' => 'open'
+            ]);
+        }
+
+        return back()->with(
+            'success',
+            'Balasan berhasil dikirim.'
+        );
     }
 
     public function searchForm()

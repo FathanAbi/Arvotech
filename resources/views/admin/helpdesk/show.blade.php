@@ -32,12 +32,65 @@
             {{ $ticket->subject }}
         </p>
 
-        <p>
+        @php
+
+        $statusClass = match($ticket->status) {
+
+            'open'
+                => 'bg-blue-100 text-blue-800',
+
+            'answered'
+                => 'bg-green-100 text-green-800',
+
+            'closed'
+                => 'bg-red-100 text-red-800',
+
+            default
+                => 'bg-gray-100 text-gray-800'
+        };
+
+        @endphp
+
+        <div class="mt-3">
+
             <strong>Status:</strong>
-            {{ $ticket->status }}
-        </p>
+
+            <span
+                class="px-3 py-1 rounded-full text-sm {{ $statusClass }}">
+
+                {{ strtoupper($ticket->status) }}
+
+            </span>
+
+        </div>
 
     </div>
+
+    @if($ticket->status !== 'closed')
+
+    <div class="mt-6">
+
+        <form
+            method="POST"
+            action="{{ route('admin.helpdesk.close', $ticket->id) }}">
+
+            @csrf
+
+            <button
+                type="submit"
+                onclick="return confirm('Tutup tiket ini?')"
+                class="px-4 py-2 bg-red-600 hover:bg-red-700
+                    text-white rounded-lg">
+
+                Tutup Tiket
+
+            </button>
+
+        </form>
+
+    </div>
+
+    @endif
 
     <div class="mt-6">
 
@@ -71,6 +124,8 @@
 
     </div>
 
+    @if($ticket->status !== 'closed')
+
     <div class="mt-8">
 
         <form
@@ -83,7 +138,8 @@
                 name="message"
                 rows="5"
                 class="w-full border rounded-lg p-3"
-                placeholder="Tulis balasan..."></textarea>
+                placeholder="Tulis balasan..."
+                required></textarea>
 
             <button
                 type="submit"
@@ -96,6 +152,22 @@
         </form>
 
     </div>
+
+    @else
+
+    <div
+        class="mt-8 p-4 rounded-lg
+            bg-red-50 border border-red-200">
+
+        <p class="text-red-700">
+
+            Tiket ini telah ditutup dan tidak dapat dibalas lagi.
+
+        </p>
+
+    </div>
+
+    @endif
 
 </div>
 

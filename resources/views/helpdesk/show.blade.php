@@ -212,6 +212,9 @@
         </div>
 
         {{-- Reply Form --}}
+
+        @if($ticket->status !== 'closed')
+
         <div
             class="mt-8 bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-200 dark:border-gray-700 p-8">
 
@@ -250,6 +253,39 @@
             </form>
 
         </div>
+
+        @else
+
+        <div
+            class="mt-8 bg-red-50 dark:bg-red-900/20
+                border border-red-200 dark:border-red-700
+                rounded-3xl p-8">
+
+            <div class="flex items-center gap-3">
+
+                <div class="text-3xl">
+                    🔒
+                </div>
+
+                <div>
+
+                    <h3 class="font-bold text-red-700 dark:text-red-300">
+                        Tiket Ditutup
+                    </h3>
+
+                    <p class="mt-1 text-red-600 dark:text-red-400">
+
+                        Tiket ini telah ditutup oleh admin dan tidak dapat menerima balasan baru.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        @endif
 
     </div>
 

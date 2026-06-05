@@ -91,7 +91,7 @@ class="max-w-7xl mx-auto px-6">
     <h2
     class="text-3xl font-bold mb-10">
 
-        Menu Favorit
+        Menu
 
     </h2>
 
@@ -107,33 +107,68 @@ class="max-w-7xl mx-auto px-6">
         class="bg-white
         dark:bg-gray-800
         rounded-2xl
-        shadow p-6">
+        shadow-sm
+        overflow-hidden
+        hover:shadow-lg
+        transition">
+
+        <!-- Foto Menu -->
+        <div class="h-56 bg-gray-200 dark:bg-gray-700">
+
+            @if($menu->foto)
+
+                <img
+                    src="{{ asset('storage/' . $menu->foto) }}"
+                    alt="{{ $menu->nama }}"
+                    class="w-full h-full object-cover">
+
+            @else
+
+                <div
+                    class="w-full h-full flex items-center justify-center text-5xl">
+
+                    🍽️
+
+                </div>
+
+            @endif
+
+        </div>
+
+        <!-- Konten -->
+        <div class="p-6">
 
             <h3
-            class="font-bold text-xl">
+                class="font-bold text-xl text-gray-900 dark:text-white">
 
                 {{ $menu->nama }}
 
             </h3>
 
             <p
-            class="text-gray-500
-            dark:text-gray-300 mt-2">
+                class="text-gray-500 dark:text-gray-300 mt-3 line-clamp-3">
 
                 {{ $menu->deskripsi }}
 
             </p>
 
-            <p
-            class="text-orange-500
-            font-bold mt-4">
+            <div
+                class="mt-5 flex items-center justify-between">
 
-                Rp
-                {{ number_format($menu->harga) }}
+                <span
+                    class="text-orange-500 font-bold text-lg">
 
-            </p>
+                    Rp {{ number_format($menu->harga, 0, ',', '.') }}
+
+                </span>
+
+                
+
+            </div>
 
         </div>
+
+    </div>
 
         @endforeach
 

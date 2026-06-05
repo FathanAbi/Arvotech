@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Menu;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+
 
 class MenuController extends Controller
 {
@@ -38,12 +40,23 @@ class MenuController extends Controller
             'nama' => 'required|max:255',
             'deskripsi' => 'nullable',
             'harga' => 'required|numeric|min:0',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
+
+        $fotoPath = null;
+
+        if ($request->hasFile('foto')) {
+
+            $fotoPath = $request
+                ->file('foto')
+                ->store('menus', 'public');
+        }
 
         Menu::create([
             'nama' => $request->nama,
             'deskripsi' => $request->deskripsi,
             'harga' => $request->harga,
+            'foto' => $fotoPath,
         ]);
 
         return redirect()
@@ -83,16 +96,39 @@ class MenuController extends Controller
         Request $request,
         Menu $menu
     ) {
+
         $request->validate([
             'nama' => 'required|max:255',
             'deskripsi' => 'nullable',
             'harga' => 'required|numeric|min:0',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
+
+        $fotoPath = $menu->foto;
+
+        if ($request->hasFile('foto')) {
+
+            // Hapus foto lama
+            if (
+                $menu->foto &&
+                Storage::disk('public')->exists($menu->foto)
+            ) {
+
+                Storage::disk('public')
+                    ->delete($menu->foto);
+            }
+
+            // Upload foto baru
+            $fotoPath = $request
+                ->file('foto')
+                ->store('menus', 'public');
+        }
 
         $menu->update([
             'nama' => $request->nama,
             'deskripsi' => $request->deskripsi,
             'harga' => $request->harga,
+            'foto' => $fotoPath,
         ]);
 
         return redirect()

@@ -44,6 +44,11 @@ Route::get(
 )->name('orders.track');
 
 Route::post(
+    '/orders/{order}/upload-proof',
+    [OrderController::class, 'uploadProof']
+)->name('orders.upload-proof');
+
+Route::post(
     '/cek-pesanan',
     [OrderTrackingController::class, 'search']
 )->name('orders.track.search');
@@ -171,6 +176,11 @@ Route::middleware('auth')
             [AdminHelpdeskController::class, 'reply']
         )->name('helpdesk.reply');
 
+        Route::post(
+            '/helpdesk/{id}/close',
+            [AdminHelpdeskController::class, 'close']
+        )->name('admin.helpdesk.close');
+
     });
 
 Route::middleware('auth')
@@ -183,10 +193,10 @@ Route::middleware('auth')
             [AdminFeedbackController::class, 'index']
         )->name('feedback.index');
 
-        Route::get(
-            '/feedback/{id}',
-            [AdminFeedbackController::class, 'show']
-        )->name('feedback.show');
+        Route::post(
+            '/helpdesk/{id}/close',
+            [AdminHelpdeskController::class, 'close']
+        )->name('helpdesk.close');
 
     });
 

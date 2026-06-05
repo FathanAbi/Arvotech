@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\CateringPackage;
+use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
@@ -124,6 +125,46 @@ class OrderController extends Controller
         return view(
             'orders.show',
             compact('order')
+        );
+    }
+
+    public function uploadProof(
+        Request $request,
+        Order $order
+    )
+    {
+        $request->validate([
+            'payment_proof' =>
+                'required|image|mimes:jpg,jpeg,png,webp|max:2048'
+        ]);
+
+        if (
+            $order->payment_proof &&
+            Storage::disk('public')->exists(
+                $order->payment_proof
+            )
+        ) {
+            Storage::disk('public')
+                ->delete(
+                    $order->payment_proof
+                );
+        }
+
+        $path = $request
+            ->file('payment_proof')
+            ->store(
+                'payment-proofs',
+                'public'
+            );
+
+        $order->update([
+            'payment_proof' => $path,
+            'status' => 'waiting_verification'
+        ]);
+
+        return back()->with(
+            'success',
+            'Bukti pembayaran berhasil diupload dan menunggu verifikasi admin.'
         );
     }
 }
