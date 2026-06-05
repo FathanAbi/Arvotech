@@ -2,6 +2,21 @@
 
 @section('content')
 
+@if(session('error'))
+
+<div
+    class="mb-6
+           bg-red-50 dark:bg-red-900/20
+           border border-red-200 dark:border-red-700
+           text-red-700 dark:text-red-300
+           rounded-2xl p-4">
+
+    {{ session('error') }}
+
+</div>
+
+@endif
+
 <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
 
     <div class="max-w-5xl mx-auto px-6 py-10">
@@ -10,7 +25,10 @@
         @if(session('success'))
 
             <div
-                class="mb-8 bg-green-50 border border-green-200 rounded-2xl p-6">
+                class="mb-8
+                    bg-green-50 dark:bg-green-900/20
+                    border border-green-200 dark:border-green-800
+                    rounded-2xl p-6">
 
                 <div class="flex items-start gap-4">
 
@@ -20,24 +38,34 @@
 
                     <div>
 
-                        <h3 class="text-xl font-bold text-green-700">
+                        <h3
+                            class="text-xl font-bold
+                                text-green-700 dark:text-green-300">
                             Tiket Berhasil Dibuat
                         </h3>
 
-                        <p class="mt-2 text-green-600">
+                        <p
+                            class="mt-2
+                                text-green-600 dark:text-green-400">
                             Simpan nomor tiket berikut dengan baik untuk
                             memantau perkembangan laporan Anda.
                         </p>
 
                         <div
-                            class="mt-4 bg-white border-2 border-green-300 rounded-xl p-4">
+                            class="mt-4
+                                bg-white dark:bg-gray-800
+                                border-2 border-green-300 dark:border-green-700
+                                rounded-xl p-4">
 
-                            <div class="text-sm text-gray-500">
+                            <div
+                                class="text-sm
+                                    text-gray-500 dark:text-gray-400">
                                 Nomor Tiket
                             </div>
 
                             <div
-                                class="text-3xl font-bold tracking-wider text-green-700">
+                                class="text-3xl font-bold tracking-wider
+                                    text-green-700 dark:text-green-300">
 
                                 {{ session('ticket_number') }}
 
@@ -46,7 +74,8 @@
                         </div>
 
                         <div
-                            class="mt-4 text-sm font-medium text-red-600">
+                            class="mt-4 text-sm font-medium
+                                text-red-600 dark:text-red-400">
 
                             ⚠️ Mohon simpan nomor tiket ini dengan baik.
                             Nomor tiket diperlukan untuk melihat status dan
@@ -91,11 +120,11 @@
                 </div>
 
                 <div>
-
                     @if($ticket->status == 'open')
-
                         <span
-                            class="px-4 py-2 rounded-full text-sm font-semibold bg-red-100 text-red-700">
+                            class="px-4 py-2 rounded-full text-sm font-semibold
+                                bg-red-100 text-red-700
+                                dark:bg-red-900/30 dark:text-red-300">
 
                             Open
 
@@ -104,7 +133,9 @@
                     @elseif($ticket->status == 'answered')
 
                         <span
-                            class="px-4 py-2 rounded-full text-sm font-semibold bg-green-100 text-green-700">
+                            class="px-4 py-2 rounded-full text-sm font-semibold
+                                bg-green-100 text-green-700
+                                dark:bg-green-900/30 dark:text-green-300">
 
                             Answered
 
@@ -113,14 +144,15 @@
                     @else
 
                         <span
-                            class="px-4 py-2 rounded-full text-sm font-semibold bg-gray-100 text-gray-700">
+                            class="px-4 py-2 rounded-full text-sm font-semibold
+                                bg-gray-100 text-gray-700
+                                dark:bg-gray-700 dark:text-gray-200">
 
                             Closed
 
                         </span>
 
                     @endif
-
                 </div>
 
             </div>
@@ -179,7 +211,8 @@
                                 class="max-w-2xl bg-gray-100 dark:bg-gray-700 rounded-2xl p-4">
 
                                 <div
-                                    class="font-semibold text-sm mb-2 text-blue-600">
+                                    class="font-semibold text-sm mb-2
+                                        text-blue-600 dark:text-blue-300">
 
                                     ADMIN
 
@@ -193,7 +226,8 @@
                                 </p>
 
                                 <div
-                                    class="mt-2 text-xs text-gray-500">
+                                    class="mt-2 text-xs
+                                        text-gray-500 dark:text-gray-400">
 
                                     {{ $message->created_at->format('d M Y H:i') }}
 
@@ -235,7 +269,13 @@
                     name="message"
                     rows="5"
                     required
-                    class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-orange-500 focus:ring-orange-500"
+                    class="w-full rounded-xl
+                        border border-gray-300 dark:border-gray-600
+                        bg-white dark:bg-gray-700
+                        text-gray-900 dark:text-white
+                        placeholder-gray-400 dark:placeholder-gray-500
+                        focus:border-orange-500
+                        focus:ring-orange-500"
                     placeholder="Tulis balasan atau informasi tambahan..."></textarea>
 
                 <div class="mt-4 flex justify-end">

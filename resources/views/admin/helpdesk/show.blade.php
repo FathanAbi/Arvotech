@@ -1,71 +1,141 @@
-{{-- resources/views/admin/helpdesk/show.blade.php --}}
-
 @extends('layouts.app')
 
 @section('content')
 
-<div class="max-w-4xl mx-auto py-8 px-6">
+<div class="max-w-5xl mx-auto px-6 py-10">
 
-    <h1 class="text-2xl font-bold mb-4">
-        Detail Tiket Helpdesk
-    </h1>
+    {{-- Header --}}
+    <div class="mb-8">
 
-    <div class="bg-white rounded-lg shadow p-6">
+        <h1
+            class="text-3xl font-bold
+                   text-gray-900 dark:text-white">
 
-        <p>
-            <strong>No Ticket:</strong>
-            {{ $ticket->ticket_number }}
+            Detail Tiket Helpdesk
+
+        </h1>
+
+        <p
+            class="mt-2 text-gray-600 dark:text-gray-400">
+
+            Kelola percakapan dan status tiket pelanggan.
+
         </p>
 
-        <p>
-            <strong>Nama:</strong>
-            {{ $ticket->name }}
-        </p>
+    </div>
 
-        <p>
-            <strong>Email:</strong>
-            {{ $ticket->email }}
-        </p>
-
-        <p>
-            <strong>Subjek:</strong>
-            {{ $ticket->subject }}
-        </p>
+    {{-- Informasi Tiket --}}
+    <div
+        class="bg-white dark:bg-gray-800
+               border border-gray-200 dark:border-gray-700
+               rounded-2xl shadow-sm p-6">
 
         @php
 
-        $statusClass = match($ticket->status) {
+            $statusClass = match($ticket->status) {
 
-            'open'
-                => 'bg-blue-100 text-blue-800',
+                'open'
+                    => 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300',
 
-            'answered'
-                => 'bg-green-100 text-green-800',
+                'answered'
+                    => 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300',
 
-            'closed'
-                => 'bg-red-100 text-red-800',
+                'closed'
+                    => 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300',
 
-            default
-                => 'bg-gray-100 text-gray-800'
-        };
+                default
+                    => 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200'
+            };
 
         @endphp
 
-        <div class="mt-3">
+        <div
+            class="grid md:grid-cols-2 gap-6">
 
-            <strong>Status:</strong>
+            <div>
 
-            <span
-                class="px-3 py-1 rounded-full text-sm {{ $statusClass }}">
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    Nomor Tiket
+                </p>
 
-                {{ strtoupper($ticket->status) }}
+                <p
+                    class="font-bold text-lg
+                           text-gray-900 dark:text-white">
 
-            </span>
+                    {{ $ticket->ticket_number }}
+
+                </p>
+
+            </div>
+
+            <div>
+
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    Status
+                </p>
+
+                <span
+                    class="inline-flex px-3 py-1 rounded-full text-sm font-semibold {{ $statusClass }}">
+
+                    {{ strtoupper($ticket->status) }}
+
+                </span>
+
+            </div>
+
+            <div>
+
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    Nama Pengguna
+                </p>
+
+                <p
+                    class="font-medium
+                           text-gray-900 dark:text-white">
+
+                    {{ $ticket->name }}
+
+                </p>
+
+            </div>
+
+            <div>
+
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    Email
+                </p>
+
+                <p
+                    class="font-medium
+                           text-gray-900 dark:text-white">
+
+                    {{ $ticket->email }}
+
+                </p>
+
+            </div>
+
+            <div class="md:col-span-2">
+
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    Subjek
+                </p>
+
+                <p
+                    class="font-medium
+                           text-gray-900 dark:text-white">
+
+                    {{ $ticket->subject }}
+
+                </p>
+
+            </div>
 
         </div>
 
     </div>
 
+    {{-- Tombol Tutup Tiket --}}
     @if($ticket->status !== 'closed')
 
     <div class="mt-6">
@@ -79,8 +149,9 @@
             <button
                 type="submit"
                 onclick="return confirm('Tutup tiket ini?')"
-                class="px-4 py-2 bg-red-600 hover:bg-red-700
-                    text-white rounded-lg">
+                class="px-5 py-3 rounded-xl
+                       bg-red-600 hover:bg-red-700
+                       text-white font-semibold transition">
 
                 Tutup Tiket
 
@@ -92,41 +163,117 @@
 
     @endif
 
-    <div class="mt-6">
+    {{-- Percakapan --}}
+    <div
+        class="mt-8 bg-white dark:bg-gray-800
+               border border-gray-200 dark:border-gray-700
+               rounded-2xl shadow-sm p-6">
 
-        <h2 class="font-bold text-lg mb-4">
-            Percakapan
+        <h2
+            class="text-xl font-bold mb-6
+                   text-gray-900 dark:text-white">
+
+            Riwayat Percakapan
+
         </h2>
 
-        @foreach($ticket->messages as $message)
+        <div class="space-y-5">
 
-            <div class="mb-4 p-4 rounded-lg border">
+            @foreach($ticket->messages as $message)
 
-                <div class="font-semibold">
-                    @if($message->sender == 'user')
-                        <strong>
-                            USER ({{ $ticket->name }})
-                        </strong>
-                    @else
-                        <strong>
-                            ADMIN
-                        </strong>
-                    @endif
-                </div>
+                @if($message->sender == 'user')
 
-                <div class="mt-2">
-                    {{ $message->message }}
-                </div>
+                    <div class="flex justify-start">
 
-            </div>
+                        <div
+                            class="max-w-3xl rounded-2xl p-4
+                                   bg-orange-50 dark:bg-orange-900/20
+                                   border border-orange-200 dark:border-orange-800">
 
-        @endforeach
+                            <div
+                                class="font-semibold text-orange-600 dark:text-orange-300">
+
+                                USER ({{ $ticket->name }})
+
+                            </div>
+
+                            <div
+                                class="mt-2 text-gray-800 dark:text-gray-200">
+
+                                {{ $message->message }}
+
+                            </div>
+
+                            <div
+                                class="mt-3 text-xs
+                                       text-gray-500 dark:text-gray-400">
+
+                                {{ $message->created_at->format('d M Y H:i') }}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                @else
+
+                    <div class="flex justify-end">
+
+                        <div
+                            class="max-w-3xl rounded-2xl p-4
+                                   bg-blue-50 dark:bg-blue-900/20
+                                   border border-blue-200 dark:border-blue-800">
+
+                            <div
+                                class="font-semibold text-blue-600 dark:text-blue-300">
+
+                                ADMIN
+
+                            </div>
+
+                            <div
+                                class="mt-2 text-gray-800 dark:text-gray-200">
+
+                                {{ $message->message }}
+
+                            </div>
+
+                            <div
+                                class="mt-3 text-xs
+                                       text-gray-500 dark:text-gray-400">
+
+                                {{ $message->created_at->format('d M Y H:i') }}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                @endif
+
+            @endforeach
+
+        </div>
 
     </div>
 
+    {{-- Form Balasan --}}
     @if($ticket->status !== 'closed')
 
-    <div class="mt-8">
+    <div
+        class="mt-8 bg-white dark:bg-gray-800
+               border border-gray-200 dark:border-gray-700
+               rounded-2xl shadow-sm p-6">
+
+        <h2
+            class="text-xl font-bold mb-4
+                   text-gray-900 dark:text-white">
+
+            Kirim Balasan
+
+        </h2>
 
         <form
             method="POST"
@@ -137,13 +284,20 @@
             <textarea
                 name="message"
                 rows="5"
-                class="w-full border rounded-lg p-3"
-                placeholder="Tulis balasan..."
-                required></textarea>
+                required
+                class="w-full rounded-xl
+                       border border-gray-300 dark:border-gray-600
+                       bg-white dark:bg-gray-700
+                       text-gray-900 dark:text-white
+                       focus:ring-2 focus:ring-blue-500
+                       focus:border-blue-500"
+                placeholder="Tulis balasan..."></textarea>
 
             <button
                 type="submit"
-                class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg">
+                class="mt-4 px-6 py-3 rounded-xl
+                       bg-blue-600 hover:bg-blue-700
+                       text-white font-semibold">
 
                 Kirim Balasan
 
@@ -156,12 +310,15 @@
     @else
 
     <div
-        class="mt-8 p-4 rounded-lg
-            bg-red-50 border border-red-200">
+        class="mt-8 rounded-2xl p-6
+               bg-red-50 dark:bg-red-900/20
+               border border-red-200 dark:border-red-800">
 
-        <p class="text-red-700">
+        <p
+            class="font-medium
+                   text-red-700 dark:text-red-300">
 
-            Tiket ini telah ditutup dan tidak dapat dibalas lagi.
+            🔒 Tiket ini telah ditutup dan tidak dapat dibalas lagi.
 
         </p>
 

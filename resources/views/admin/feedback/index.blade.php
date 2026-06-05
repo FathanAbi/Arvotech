@@ -120,7 +120,9 @@
                             @if($feedback->category == 'kritik')
 
                                 <span
-                                    class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">
+                                    class="px-3 py-1 rounded-full text-xs font-semibold
+                                        bg-red-100 text-red-700
+                                        dark:bg-red-800 dark:text-red-100">
 
                                     Kritik
 
@@ -129,7 +131,9 @@
                             @else
 
                                 <span
-                                    class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
+                                    class="px-3 py-1 rounded-full text-xs font-semibold
+                                        bg-green-100 text-green-700
+                                        dark:bg-green-800 dark:text-green-100">
 
                                     Saran
 

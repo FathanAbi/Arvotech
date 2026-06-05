@@ -179,7 +179,7 @@ Route::middleware('auth')
         Route::post(
             '/helpdesk/{id}/close',
             [AdminHelpdeskController::class, 'close']
-        )->name('admin.helpdesk.close');
+        )->name('helpdesk.close');
 
     });
 
@@ -193,10 +193,12 @@ Route::middleware('auth')
             [AdminFeedbackController::class, 'index']
         )->name('feedback.index');
 
-        Route::post(
-            '/helpdesk/{id}/close',
-            [AdminHelpdeskController::class, 'close']
-        )->name('helpdesk.close');
+        Route::get(
+            '/feedback/{id}',
+            [AdminFeedbackController::class, 'show']
+        )->name('feedback.show');
+
+        
 
     });
 

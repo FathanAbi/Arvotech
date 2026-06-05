@@ -110,17 +110,38 @@
                             <td class="px-6 py-4">
 
                                 @if($ticket->status == 'open')
-                                    <span class="px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-700">
-                                        Open
+
+                                    <span
+                                        class="px-3 py-1 text-xs font-semibold rounded-full
+                                            bg-red-100 text-red-700
+                                            dark:bg-red-900/30 dark:text-red-300">
+
+                                        🔴 Open
+
                                     </span>
+
                                 @elseif($ticket->status == 'answered')
-                                    <span class="px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-700">
-                                        Answered
+
+                                    <span
+                                        class="px-3 py-1 text-xs font-semibold rounded-full
+                                            bg-green-100 text-green-700
+                                            dark:bg-green-900/30 dark:text-green-300">
+
+                                        🟢 Answered
+
                                     </span>
+
                                 @else
-                                    <span class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-700">
-                                        Closed
+
+                                    <span
+                                        class="px-3 py-1 text-xs font-semibold rounded-full
+                                            bg-gray-100 text-gray-700
+                                            dark:bg-gray-700 dark:text-gray-200">
+
+                                        ⚫ Closed
+
                                     </span>
+
                                 @endif
 
                             </td>

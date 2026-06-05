@@ -4,7 +4,7 @@
 
 <div class="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors">
 
-```
+
 <div class="max-w-7xl mx-auto px-6 py-8">
 
     <!-- Header -->
@@ -312,7 +312,7 @@
     </div>
 
 </div>
-```
+
 
 </div>
 
