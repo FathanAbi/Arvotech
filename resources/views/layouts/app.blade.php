@@ -125,13 +125,13 @@ document.addEventListener('DOMContentLoaded', () => {
             <!-- Tentang -->
             <div>
                 <h3 class="text-lg font-bold text-white mb-4">
-                    UMKM Surabaya
+                    Lontong Balap Cak Gendut
                 </h3>
 
                 <p class="text-sm leading-relaxed">
-                    Platform digital untuk membantu promosi
-                    dan pengembangan usaha mikro, kecil,
-                    dan menengah di wilayah Surabaya.
+                    Menyajikan lontong balap
+                autentik dengan cita rasa
+                khas Surabaya sejak lama.
                 </p>
             </div>
 
@@ -146,6 +146,27 @@ document.addEventListener('DOMContentLoaded', () => {
                         <a href="/"
                            class="hover:text-orange-400">
                             Beranda
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/#menu"
+                           class="hover:text-orange-400">
+                            Daftar Menu
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/catering"
+                           class="hover:text-orange-400">
+                            Daftar Paket Catering
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/cek-pesanan"
+                           class="hover:text-orange-400">
+                            Lacak Pesanan
                         </a>
                     </li>
 
@@ -181,26 +202,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         </a>
                     </li>
 
-                    <li>
-                        <a href="#"
-                           class="hover:text-orange-400">
-                            FAQ
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="#"
-                           class="hover:text-orange-400">
-                            Kebijakan Privasi
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="#"
-                           class="hover:text-orange-400">
-                            Syarat & Ketentuan
-                        </a>
-                    </li>
+                    
+               
                 </ul>
             </div>
 
@@ -212,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 <ul class="space-y-2 text-sm">
                     <li>
-                        📍 Surabaya, Jawa Timur
+                        📍 Jln. Embong Malang 38, Surabaya
                     </li>
 
                     <li>
@@ -220,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </li>
 
                     <li>
-                        ✉️ info@umkm-surabaya.com
+                        ✉️ arvotech@gmail.com
                     </li>
                 </ul>
             </div>
@@ -233,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             <p class="text-sm">
                 © {{ date('Y') }}
-                UMKM Surabaya.
+                Lontong Balap Cak Gendut.
                 Seluruh Hak Cipta Dilindungi.
             </p>
 
