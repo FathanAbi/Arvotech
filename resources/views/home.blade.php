@@ -153,16 +153,48 @@ class="max-w-7xl mx-auto px-6">
             </p>
 
             <div
-                class="mt-5 flex items-center justify-between">
+                class="mt-5 flex flex-col gap-3">
 
-                <span
-                    class="text-orange-500 font-bold text-lg">
+                <div class="flex items-center justify-between">
 
-                    Rp {{ number_format($menu->harga, 0, ',', '.') }}
+                    <span
+                        class="text-orange-500 font-bold text-lg">
 
-                </span>
+                        Rp {{ number_format($menu->harga, 0, ',', '.') }}
 
-                
+                    </span>
+
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+
+                    <a
+                        href="https://gofood.link/a/NzX7P8o"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-center px-4 py-2 rounded-xl
+                            bg-green-600 hover:bg-green-700
+                            text-white text-sm font-semibold
+                            transition">
+
+                        🛵 GoFood
+
+                    </a>
+
+                    <a
+                        href="https://r.grab.com/g/6-20260611_094713_823505d75c99460d875a565f4a9b5302_MEXMPS-IDGFSTI00001g08"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-center px-4 py-2 rounded-xl
+                            bg-green-500 hover:bg-green-600
+                            text-white text-sm font-semibold
+                            transition">
+
+                        🚕 GrabFood
+
+                    </a>
+
+                </div>
 
             </div>
 
@@ -222,19 +254,11 @@ class="max-w-7xl mx-auto px-6">
                             class="mt-2 text-gray-700 dark:text-gray-300">
 
                             <p>
-                                Senin - Jumat
+                                Setiap Hari
                             </p>
 
                             <p class="font-medium">
-                                09:00 - 17:00
-                            </p>
-
-                            <p class="mt-3">
-                                Sabtu - Minggu
-                            </p>
-
-                            <p class="font-medium">
-                                13:00 - 21:00
+                                07:00 - 23:00
                             </p>
 
                         </div>
