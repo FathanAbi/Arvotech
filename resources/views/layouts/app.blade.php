@@ -97,6 +97,49 @@ transition-colors duration-300">
             {{-- Right Side --}}
             <div class="flex items-center gap-3">
 
+
+                @auth
+
+                    <div class="hidden md:flex items-center gap-4">
+
+                        <div class="text-sm text-gray-600 dark:text-gray-300">
+                            Halo,
+                            <span class="font-semibold text-orange-500">
+                                {{ Auth::user()->name }}
+                            </span>
+                        </div>
+
+                        <a
+                            href="{{ route('admin.dashboard') }}"
+                            class="text-orange-500 font-semibold hover:text-orange-600">
+
+                            Dashboard
+
+                        </a>
+
+                        <form
+                            action="{{ route('logout') }}"
+                            method="POST">
+
+                            @csrf
+
+                            <button
+                                type="submit"
+                                class="px-3 py-2 rounded-lg
+                                    bg-red-500 hover:bg-red-600
+                                    text-white text-sm">
+
+                                Logout
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                @endauth
+
+                
                 <button
                     id="theme-toggle"
                     class="px-3 py-2 rounded-lg
@@ -105,19 +148,6 @@ transition-colors duration-300">
                     🌙
 
                 </button>
-
-                @auth
-
-                    <a
-                        href="{{ route('admin.dashboard') }}"
-                        class="hidden md:inline-flex
-                               text-orange-500 font-semibold">
-
-                        Dashboard
-
-                    </a>
-
-                @endauth
 
                 {{-- Mobile Menu Button --}}
                 <button
@@ -194,13 +224,42 @@ transition-colors duration-300">
 
             @auth
 
-                <a
-                    href="{{ route('admin.dashboard') }}"
-                    class="block text-orange-500 font-semibold">
+                <div class="pt-3 border-t border-gray-200 dark:border-gray-700">
 
-                     Dashboard Admin
+                    <p class="mb-3 text-sm text-gray-600 dark:text-gray-300">
+                        Login sebagai:
+                        <span class="font-semibold text-orange-500">
+                            {{ Auth::user()->name }}
+                        </span>
+                    </p>
 
-                </a>
+                    <a
+                        href="{{ route('admin.dashboard') }}"
+                        class="block text-orange-500 font-semibold mb-3">
+
+                        Dashboard Admin
+
+                    </a>
+
+                    <form
+                        action="{{ route('logout') }}"
+                        method="POST">
+
+                        @csrf
+
+                        <button
+                            type="submit"
+                            class="w-full px-4 py-2 rounded-lg
+                                bg-red-500 hover:bg-red-600
+                                text-white">
+
+                            Logout
+
+                        </button>
+
+                    </form>
+
+                </div>
 
             @endauth
 

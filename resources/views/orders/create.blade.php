@@ -160,11 +160,12 @@
                 </label>
 
                 <select
+                    id="packageSelect"
                     name="package_id"
                     class="w-full px-4 py-3 rounded-xl
-                           border border-gray-300 dark:border-gray-600
-                           bg-white dark:bg-gray-700
-                           text-gray-900 dark:text-white">
+                        border border-gray-300 dark:border-gray-600
+                        bg-white dark:bg-gray-700
+                        text-gray-900 dark:text-white">
 
                     <option value="">
                         Pilih Paket Catering
@@ -174,6 +175,7 @@
 
                         <option
                             value="{{ $package->id }}"
+                            data-price="{{ $package->harga }}"
                             @selected(old('package_id', $selectedPackage ?? '') == $package->id)>
 
                             {{ $package->nama_paket }}
@@ -198,14 +200,61 @@
                 </label>
 
                 <input
+                    id="quantityInput"
                     type="number"
                     min="1"
                     name="quantity"
                     value="{{ old('quantity', 1) }}"
                     class="w-full px-4 py-3 rounded-xl
-                           border border-gray-300 dark:border-gray-600
-                           bg-white dark:bg-gray-700
-                           text-gray-900 dark:text-white">
+                        border border-gray-300 dark:border-gray-600
+                        bg-white dark:bg-gray-700
+                        text-gray-900 dark:text-white">
+
+            </div>
+
+            <!-- Ringkasan Pesanan -->
+            <div
+                class="mb-8 p-6 rounded-xl
+                    bg-green-50 dark:bg-green-900/20
+                    border border-green-200 dark:border-green-700">
+
+                <h3 class="font-semibold text-lg text-green-700 dark:text-green-400 mb-4">
+                    Ringkasan Pesanan
+                </h3>
+
+                <div class="space-y-2 text-sm">
+
+                    <div class="flex justify-between">
+                        <span>Harga Paket</span>
+                        <span id="packagePrice">
+                            Rp 0
+                        </span>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <span>Jumlah Porsi</span>
+                        <span id="quantityDisplay">
+                            1
+                        </span>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <span>Ongkos Kirim</span>
+                        <span class="font-semibold text-green-600">
+                            GRATIS
+                        </span>
+                    </div>
+
+                    <hr class="my-3 border-gray-300 dark:border-gray-600">
+
+                    <div class="flex justify-between text-lg font-bold">
+                        <span>Total Harga</span>
+                        <span id="totalPrice">
+                            Rp 0
+                        </span>
+                    </div>
+
+                </div>
 
             </div>
 
@@ -261,5 +310,47 @@
     </div>
 
 </div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const packageSelect = document.getElementById('packageSelect');
+    const quantityInput = document.getElementById('quantityInput');
+
+    const packagePrice = document.getElementById('packagePrice');
+    const quantityDisplay = document.getElementById('quantityDisplay');
+    const totalPrice = document.getElementById('totalPrice');
+
+    function formatRupiah(number) {
+        return 'Rp ' + new Intl.NumberFormat('id-ID').format(number);
+    }
+
+    function calculateTotal() {
+
+        const selectedOption =
+            packageSelect.options[packageSelect.selectedIndex];
+
+        const price =
+            parseInt(selectedOption.dataset.price || 0);
+
+        const quantity =
+            parseInt(quantityInput.value || 1);
+
+        const total = price * quantity;
+
+        packagePrice.textContent = formatRupiah(price);
+        quantityDisplay.textContent = quantity;
+        totalPrice.textContent = formatRupiah(total);
+    }
+
+    packageSelect.addEventListener('change', calculateTotal);
+    quantityInput.addEventListener('input', calculateTotal);
+
+    calculateTotal();
+
+});
+
+</script>
 
 @endsection
