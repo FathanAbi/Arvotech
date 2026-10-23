@@ -285,7 +285,7 @@
                     </p>
 
                     <p>
-                        a.n. Lontong Balap Cak Gendut
+                        a.n. Lontong Balap Mas Rusdi
                     </p>
 
                 </div>

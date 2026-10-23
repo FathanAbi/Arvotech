@@ -12,7 +12,7 @@
         content="width=device-width, initial-scale=1.0">
 
     <title>
-        Lontong Balap Cak Gendut
+        Lontong Balap Mas Rusdi
     </title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -36,7 +36,7 @@ transition-colors duration-300">
                 href="/"
                 class="font-bold text-xl text-orange-500">
 
-                Lontong Balap Cak Gendut
+                Lontong Balap Mas Rusdi
 
             </a>
 
@@ -311,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <!-- Tentang -->
             <div>
                 <h3 class="text-lg font-bold text-white mb-4">
-                    Lontong Balap Cak Gendut
+                    Lontong Balap Mas Rusdi
                 </h3>
 
                 <p class="text-sm leading-relaxed">
@@ -422,7 +422,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             <p class="text-sm">
                 © {{ date('Y') }}
-                Lontong Balap Cak Gendut.
+                Lontong Balap Mas Rusdi.
                 Seluruh Hak Cipta Dilindungi.
             </p>
 

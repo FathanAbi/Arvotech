@@ -23,7 +23,7 @@
             </h1>
 
             <p class="text-sm text-gray-500">
-                Lontong Balap Cak Gendut
+                Lontong Balap Mas Rusdi
             </p>
 
         </div>

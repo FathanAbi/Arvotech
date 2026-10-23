@@ -24,7 +24,7 @@ class="max-w-7xl mx-auto px-6 py-20">
             class="text-5xl font-extrabold mt-4">
 
                 Lontong Balap
-                Cak Gendut
+                Mas Rusdi
 
             </h1>
 
@@ -70,7 +70,7 @@ class="max-w-7xl mx-auto px-6 py-20">
 
             <img
             src="/images/lontong-balap.jpg"
-            alt="Lontong Balap Cak Gendut"
+            alt="Lontong Balap Mas Rusdi"
             class="w-60 max-w-lg object-cover rounded-3xl shadow-2xl mx-auto">
 
         </div>
@@ -234,7 +234,7 @@ class="max-w-7xl mx-auto px-6">
                     class="text-2xl font-bold mb-6
                            text-gray-900 dark:text-white">
 
-                    Lontong Balap Cak Gendut
+                    Lontong Balap Mas Rusdi
 
                 </h3>
 
@@ -278,8 +278,7 @@ class="max-w-7xl mx-auto px-6">
                         <p
                             class="mt-2 text-gray-700 dark:text-gray-300">
 
-                            Jalan Embong Malang 38, Surabaya,
-                            Jawa Timur
+                            Jl. Pahlawan No. 123, Surabaya, Jawa Timur
 
                         </p>
 
@@ -296,7 +295,7 @@ class="max-w-7xl mx-auto px-6">
                         </h4>
 
                         <a
-                            href="https://maps.app.goo.gl/G1gVA9z1MPsSs65K9"
+                            href="https://www.google.com/maps?q=-7.275841,112.743125"
                             target="_blank"
                             class="inline-block mt-2
                                    text-blue-600 hover:underline">
@@ -315,7 +314,7 @@ class="max-w-7xl mx-auto px-6">
             <div
                 class="rounded-2xl overflow-hidden shadow-lg">
 
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d253303.43783176574!2d112.42670129453121!3d-7.256063299999992!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7f95d917c4fdf%3A0x49db77b7799abc54!2sLontong%20Balap%20Asli%20Pak%20Gendut%20(Tidak%20Buka%20Cabang)!5e0!3m2!1sid!2sid!4v1780642299721!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="https://maps.google.com/maps?q=-7.275841,112.743125&z=15&output=embed" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
             </div>
 
