@@ -139,7 +139,7 @@
                 </p>
 
                 <form
-                    action="{{ route('orders.upload-proof', $order) }}"
+                    action="{{ $uploadUrl }}"
                     method="POST"
                     enctype="multipart/form-data"
                     class="mt-4">
@@ -205,7 +205,7 @@
             </h3>
 
             <img
-                src="{{ asset('storage/' . $order->payment_proof) }}"
+                src="{{ $proofUrl }}"
                 alt="Bukti Pembayaran"
                 class="max-w-md rounded-xl border">
 

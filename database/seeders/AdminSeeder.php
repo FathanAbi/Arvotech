@@ -10,15 +10,19 @@ class AdminSeeder extends Seeder
 {
     public function run(): void
     {
-       User::updateOrCreate(
+        // SEC-012 (MASS-01): `role` is no longer mass assignable, so it has to
+        // be set explicitly after the record is created or updated.
+        $admin = User::updateOrCreate(
             [
-                'email' => 'admin@cakgendut.com'
+                'email' => 'admin@cakgendut.com',
             ],
             [
                 'name' => 'Administrator',
                 'password' => Hash::make('admin123'),
-                'role' => 'admin'
             ]
         );
+
+        $admin->role = 'admin';
+        $admin->save();
     }
 }

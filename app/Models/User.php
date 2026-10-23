@@ -10,7 +10,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'role'])]
+// SEC-012 (MASS-01): `role` is deliberately NOT mass assignable. Privileged
+// accounts are provisioned by Database\Seeders\AdminSeeder, which sets the
+// attribute explicitly (`$user->role = 'admin'; $user->save();`).
+#[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {

@@ -28,11 +28,31 @@
                 <p
                     class="mt-3 text-gray-600 dark:text-gray-400">
 
-                    Masukkan nomor tiket atau nama Anda.
+                    Masukkan nomor tiket dan email yang Anda gunakan saat
+                    membuat tiket.
 
                 </p>
 
             </div>
+
+            @if($errors->any())
+
+                <div
+                    class="mb-6 p-4 rounded-xl bg-red-100 text-red-700 border border-red-200 dark:bg-red-900/20 dark:text-red-300 dark:border-red-700">
+
+                    <ul class="list-disc list-inside">
+
+                        @foreach($errors->all() as $error)
+
+                            <li>{{ $error }}</li>
+
+                        @endforeach
+
+                    </ul>
+
+                </div>
+
+            @endif
 
             <form
                 method="POST"
@@ -40,11 +60,41 @@
 
                 @csrf
 
+                <label
+                    for="ticket_number"
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+
+                    Nomor Tiket
+
+                </label>
+
                 <input
                     type="text"
-                    name="keyword"
+                    id="ticket_number"
+                    name="ticket_number"
+                    value="{{ old('ticket_number') }}"
+                    required
+                    autocomplete="off"
                     class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                    placeholder="Contoh: HD-A7KX92QP atau Budi">
+                    placeholder="Contoh: HD-A7KX92QP">
+
+                <label
+                    for="email"
+                    class="block mt-4 text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+
+                    Email
+
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value="{{ old('email') }}"
+                    required
+                    autocomplete="email"
+                    class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                    placeholder="email@contoh.com">
 
                 <button
                     type="submit"

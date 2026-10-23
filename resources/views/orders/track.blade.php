@@ -16,7 +16,7 @@
         class="mt-3 text-center
                text-gray-600 dark:text-gray-400">
 
-        Masukkan nomor invoice atau nama pemesan.
+        Masukkan nomor invoice pesanan Anda.
 
     </p>
 
@@ -32,7 +32,7 @@
             <input
                 type="text"
                 name="keyword"
-                placeholder="INV-20260601001 atau Nama Pemesan"
+                placeholder="INV-20260601001"
                 class="flex-1 px-4 py-3 rounded-xl
                        border border-gray-300 dark:border-gray-600
                        bg-white dark:bg-gray-800
@@ -47,6 +47,14 @@
             </button>
 
         </div>
+
+        @error('keyword')
+
+            <p class="mt-2 text-red-500 text-sm">
+                {{ $message }}
+            </p>
+
+        @enderror
 
     </form>
 
@@ -139,7 +147,7 @@
                             </span>
 
                             <a
-                                href="{{ url('/orders/'.$order->id) }}"
+                                href="{{ $showUrls[$order->id] ?? '#' }}"
                                 class="bg-orange-500 hover:bg-orange-600
                                     text-white px-4 py-2 rounded-lg
                                     text-sm font-medium transition">

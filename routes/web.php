@@ -21,7 +21,23 @@ use App\Http\Controllers\Admin\FeedbackController as AdminFeedbackController;
 
 Route::get('/', [HomeController::class, 'index']);
 
-Route::resource('orders', OrderController::class);
+// SEC-002 (IDOR-01): only the public booking form is reachable by guests.
+// index/edit/update/destroy are gone (they were unhandled 500s), and the
+// remaining read/upload routes below require a valid signed URL.
+Route::get(
+    '/orders/create',
+    [OrderController::class, 'create']
+)->name('orders.create');
+
+Route::post(
+    '/orders',
+    [OrderController::class, 'store']
+)->middleware('throttle:10,1')->name('orders.store');
+
+Route::get(
+    '/orders/{order}',
+    [OrderController::class, 'show']
+)->middleware('signed')->name('orders.show');
 
 Route::get(
     '/catering',
@@ -33,11 +49,6 @@ Route::get(
     [CateringController::class, 'show']
 )->name('catering.show');
 
-Route::post(
-    '/feedback',
-    [FeedbackController::class, 'store']
-)->name('feedback.store');
-
 Route::get(
     '/cek-pesanan',
     [OrderTrackingController::class, 'index']
@@ -46,12 +57,19 @@ Route::get(
 Route::post(
     '/orders/{order}/upload-proof',
     [OrderController::class, 'uploadProof']
-)->name('orders.upload-proof');
+)->middleware(['signed', 'throttle:10,1'])->name('orders.upload-proof');
+
+// SEC-007 (STOR-01): bukti pembayaran disimpan di disk privat dan hanya
+// bisa dibuka lewat tautan bertanda tangan.
+Route::get(
+    '/orders/{order}/payment-proof',
+    [OrderController::class, 'paymentProof']
+)->middleware('signed')->name('orders.payment-proof');
 
 Route::post(
     '/cek-pesanan',
     [OrderTrackingController::class, 'search']
-)->name('orders.track.search');
+)->middleware('throttle:30,1')->name('orders.track.search');
 
 Route::get(
     '/helpdesk',
@@ -61,7 +79,7 @@ Route::get(
 Route::post(
     '/helpdesk',
     [HelpdeskController::class, 'store']
-);
+)->middleware('throttle:10,1');
 
 Route::get(
     '/helpdesk/search',
@@ -71,7 +89,7 @@ Route::get(
 Route::post(
     '/helpdesk/search',
     [HelpdeskController::class, 'search']
-)->name('helpdesk.search');
+)->middleware('throttle:30,1')->name('helpdesk.search');
 
 Route::get(
     '/helpdesk/{ticket}',
@@ -81,17 +99,7 @@ Route::get(
 Route::post(
     '/helpdesk/{ticket}/reply',
     [HelpdeskController::class, 'reply']
-);
-
-Route::get(
-    '/helpdesk/{ticket}',
-    [HelpdeskController::class, 'show']
-)->name('helpdesk.show');
-
-Route::post(
-    '/helpdesk/{ticket}/reply',
-    [HelpdeskController::class, 'reply']
-);
+)->middleware('throttle:10,1');
 
 Route::get(
     '/feedback',
@@ -101,17 +109,7 @@ Route::get(
 Route::post(
     '/feedback',
     [FeedbackController::class, 'store']
-)->name('feedback.store');
-
-Route::middleware(['auth', 'verified'])
-    ->prefix('admin')
-    ->group(function () {
-
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('admin.dashboard');
-
-    });
+)->middleware('throttle:10,1')->name('feedback.store');
 
 Route::middleware(['auth', 'admin'])
     ->prefix('admin')
@@ -133,34 +131,20 @@ Route::middleware(['auth', 'admin'])
             'orders',
             AdminOrderController::class
         );
-    });
-
-Route::prefix('admin')
-    ->middleware(['auth', 'admin'])
-    ->name('admin.')
-    ->group(function () {
-
-        Route::get(
-            '/orders',
-            [AdminOrderController::class, 'index']
-        )->name('orders.index');
-
-        Route::get(
-            '/orders/{order}',
-            [AdminOrderController::class, 'show']
-        )->name('orders.show');
 
         Route::patch(
             '/orders/{order}/status',
             [AdminOrderController::class, 'updateStatus']
         )->name('orders.status');
-    });
 
-Route::middleware('auth')
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
+        // SEC-007 (STOR-01): admin-only stream of the private receipt.
+        Route::get(
+            '/orders/{order}/payment-proof',
+            [AdminOrderController::class, 'paymentProof']
+        )->name('orders.payment-proof');
 
+        // SEC-001 (BAC-01): admin-only. Previously guarded by 'auth' only,
+        // letting any registered customer impersonate the administrator.
         Route::get(
             '/helpdesk',
             [AdminHelpdeskController::class, 'index']
@@ -181,13 +165,6 @@ Route::middleware('auth')
             [AdminHelpdeskController::class, 'close']
         )->name('helpdesk.close');
 
-    });
-
-Route::middleware('auth')
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-
         Route::get(
             '/feedback',
             [AdminFeedbackController::class, 'index']
@@ -198,10 +175,6 @@ Route::middleware('auth')
             [AdminFeedbackController::class, 'show']
         )->name('feedback.show');
 
-        
-
     });
-
-    
 
 require __DIR__.'/auth.php';

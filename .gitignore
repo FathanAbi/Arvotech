@@ -25,3 +25,8 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+MANUAL.md
+AGENT_MANUAL.md
+task.md
+security-audit.md

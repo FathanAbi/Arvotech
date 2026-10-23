@@ -6,9 +6,60 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\CateringPackage;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 
 class OrderController extends Controller
 {
+    /**
+     * Masa berlaku tautan detail pesanan yang dikirim setelah submit.
+     * Cukup panjang agar pelanggan masih bisa kembali mengunggah bukti bayar.
+     */
+    private const SHOW_LINK_TTL_DAYS = 7;
+
+    /**
+     * Masa berlaku tautan yang dibuat saat halaman detail dibuka.
+     */
+    private const UPLOAD_LINK_TTL_HOURS = 2;
+
+    /**
+     * Tautan detail pesanan bertanda tangan (SEC-002).
+     * Tanpa signature, /orders/{id} tidak dapat diakses publik.
+     */
+    private function signedShowUrl(Order $order): string
+    {
+        return URL::temporarySignedRoute(
+            'orders.show',
+            now()->addDays(self::SHOW_LINK_TTL_DAYS),
+            ['order' => $order->id]
+        );
+    }
+
+    /**
+     * Tautan unggah bukti pembayaran bertanda tangan (SEC-002).
+     */
+    private function signedUploadUrl(Order $order): string
+    {
+        return URL::temporarySignedRoute(
+            'orders.upload-proof',
+            now()->addHours(self::UPLOAD_LINK_TTL_HOURS),
+            ['order' => $order->id]
+        );
+    }
+
+    /**
+     * Tautan bukti pembayaran bertanda tangan (SEC-007).
+     * Berkas disimpan di disk privat, jadi hanya tautan bertanda tangan
+     * yang bisa membukanya.
+     */
+    private function signedProofUrl(Order $order): string
+    {
+        return URL::temporarySignedRoute(
+            'orders.payment-proof',
+            now()->addHours(self::UPLOAD_LINK_TTL_HOURS),
+            ['order' => $order->id]
+        );
+    }
+
     /**
      * Form pemesanan catering
      */
@@ -105,10 +156,7 @@ class OrderController extends Controller
         ]);
 
         return redirect()
-            ->route(
-                'orders.show',
-                $order
-            )
+            ->to($this->signedShowUrl($order))
             ->with(
                 'success',
                 'Pesanan berhasil dibuat. Silakan lakukan pembayaran dan tunggu verifikasi admin.'
@@ -117,6 +165,10 @@ class OrderController extends Controller
 
     /**
      * Detail pesanan
+     *
+     * SEC-002 (IDOR-01): rute ini dilindungi middleware `signed`, sehingga
+     * hanya bisa dibuka lewat tautan bertanda tangan — bukan dengan menebak
+     * ID berurutan.
      */
     public function show(Order $order)
     {
@@ -124,15 +176,36 @@ class OrderController extends Controller
 
         return view(
             'orders.show',
-            compact('order')
+            [
+                'order' => $order,
+                'uploadUrl' => $this->signedUploadUrl($order),
+                'proofUrl' => $order->payment_proof
+                    ? $this->signedProofUrl($order)
+                    : null,
+            ]
         );
+    }
+
+    /**
+     * SEC-007 (STOR-01): stream bukti pembayaran dari disk privat.
+     * Hanya dapat diakses lewat tautan bertanda tangan.
+     */
+    public function paymentProof(Order $order)
+    {
+        abort_unless(
+            $order->payment_proof &&
+            Storage::disk('local')->exists($order->payment_proof),
+            404
+        );
+
+        return Storage::disk('local')
+            ->response($order->payment_proof);
     }
 
     public function uploadProof(
         Request $request,
         Order $order
-    )
-    {
+    ) {
         $request->validate([
             'payment_proof' =>
                 'required|image|mimes:jpg,jpeg,png,webp|max:2048'
@@ -140,11 +213,11 @@ class OrderController extends Controller
 
         if (
             $order->payment_proof &&
-            Storage::disk('public')->exists(
+            Storage::disk('local')->exists(
                 $order->payment_proof
             )
         ) {
-            Storage::disk('public')
+            Storage::disk('local')
                 ->delete(
                     $order->payment_proof
                 );
@@ -154,7 +227,7 @@ class OrderController extends Controller
             ->file('payment_proof')
             ->store(
                 'payment-proofs',
-                'public'
+                'local'
             );
 
         $order->update([
@@ -162,9 +235,13 @@ class OrderController extends Controller
             'status' => 'waiting_verification'
         ]);
 
-        return back()->with(
-            'success',
-            'Bukti pembayaran berhasil diupload dan menunggu verifikasi admin.'
-        );
+        // Kembali ke halaman detail lewat tautan bertanda tangan yang baru,
+        // bukan `back()`, agar referer yang sudah kedaluwarsa tidak 403.
+        return redirect()
+            ->to($this->signedShowUrl($order))
+            ->with(
+                'success',
+                'Bukti pembayaran berhasil diupload dan menunggu verifikasi admin.'
+            );
     }
 }

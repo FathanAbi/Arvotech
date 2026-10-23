@@ -154,12 +154,12 @@
             <div class="space-y-4">
 
                 <img
-                    src="{{ asset('storage/' . $order->payment_proof) }}"
+                    src="{{ route('admin.orders.payment-proof', $order) }}"
                     alt="Bukti Pembayaran"
                     class="max-w-xl rounded-xl border border-gray-200 dark:border-gray-700 shadow">
 
                 <a
-                    href="{{ asset('storage/' . $order->payment_proof) }}"
+                    href="{{ route('admin.orders.payment-proof', $order) }}"
                     target="_blank"
                     class="inline-flex items-center px-4 py-2
                         bg-blue-600 hover:bg-blue-700

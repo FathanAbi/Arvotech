@@ -112,28 +112,56 @@ class HelpdeskController extends Controller
         return view('helpdesk.search');
     }
 
+    /**
+     * SEC-003 (INFO-01): pencarian tiket dibatasi pada kecocokan persis
+     * nomor tiket + email pembuat tiket. Pencarian wildcard `LIKE
+     * %keyword%` pada `ticket_number` dan `name` sebelumnya membuat input
+     * `%` atau satu huruf mengembalikan seluruh tiket pelanggan beserta
+     * tautan detailnya.
+     */
     public function search(Request $request)
     {
-        $request->validate([
-            'keyword' => 'required'
+        $validated = $request->validate([
+            'ticket_number' => [
+                'required',
+                'string',
+                'max:255'
+            ],
+            'email' => [
+                'required',
+                'email',
+                'max:255'
+            ]
         ]);
 
-        $tickets = HelpdeskTicket::where(
+        // Nomor tiket disimpan dalam huruf besar
+        // ('HD-' . strtoupper(Str::random(8))), jadi input dinormalkan agar
+        // hasil salin-tempel tetap cocok tanpa melonggarkan pencocokan.
+        $ticket = HelpdeskTicket::where(
                 'ticket_number',
-                'like',
-                '%' . $request->keyword . '%'
+                strtoupper(trim($validated['ticket_number']))
             )
-            ->orWhere(
-                'name',
-                'like',
-                '%' . $request->keyword . '%'
-            )
-            ->latest()
-            ->get();
+            ->where('email', $validated['email'])
+            ->first();
 
-        return view(
-            'helpdesk.search-result',
-            compact('tickets')
+        if (! $ticket) {
+
+            // Satu pesan generik untuk "tiket tidak ada" maupun "email
+            // salah", supaya tidak menjadi oracle enumerasi.
+            return redirect()
+                ->route('helpdesk.search.form')
+                ->withInput(
+                    $request->only('ticket_number')
+                )
+                ->withErrors([
+                    'ticket_number' =>
+                        'Nomor tiket dan email tidak cocok dengan tiket mana pun.'
+                ]);
+        }
+
+        return redirect()->route(
+            'helpdesk.show',
+            $ticket->ticket_number
         );
     }
 }

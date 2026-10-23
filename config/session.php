@@ -169,7 +169,13 @@ return [
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE'),
+    // SEC-005 (CONF-01): this previously had no default, so an unset
+    // SESSION_SECURE_COOKIE resolved to null and the session cookie was
+    // emitted without the Secure flag. Default to true whenever the app runs
+    // in production; local and testing keep the permissive behaviour so
+    // http://localhost development and the test suite still work. An explicit
+    // SESSION_SECURE_COOKIE=false in .env still takes precedence.
+    'secure' => env('SESSION_SECURE_COOKIE', env('APP_ENV', 'production') === 'production'),
 
     /*
     |--------------------------------------------------------------------------

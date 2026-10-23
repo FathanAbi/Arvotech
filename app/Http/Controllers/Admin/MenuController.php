@@ -109,14 +109,7 @@ class MenuController extends Controller
         if ($request->hasFile('foto')) {
 
             // Hapus foto lama
-            if (
-                $menu->foto &&
-                Storage::disk('public')->exists($menu->foto)
-            ) {
-
-                Storage::disk('public')
-                    ->delete($menu->foto);
-            }
+            $this->deletePhoto($menu);
 
             // Upload foto baru
             $fotoPath = $request
@@ -144,6 +137,10 @@ class MenuController extends Controller
      */
     public function destroy(Menu $menu)
     {
+        // SEC-013 (ORPH-01): tanpa ini file gambar tertinggal di disk
+        // public setelah baris database dihapus.
+        $this->deletePhoto($menu);
+
         $menu->delete();
 
         return redirect()
@@ -152,5 +149,20 @@ class MenuController extends Controller
                 'success',
                 'Menu berhasil dihapus'
             );
+    }
+
+    /**
+     * Hapus file foto menu dari disk public bila ada.
+     */
+    private function deletePhoto(Menu $menu): void
+    {
+        if (
+            $menu->foto &&
+            Storage::disk('public')->exists($menu->foto)
+        ) {
+
+            Storage::disk('public')
+                ->delete($menu->foto);
+        }
     }
 }

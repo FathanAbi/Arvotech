@@ -33,12 +33,16 @@ class HelpdeskController extends Controller
 
     public function reply(Request $request, $id)
     {
+        $validated = $request->validate([
+            'message' => 'required|string|max:5000',
+        ]);
+
         $ticket = HelpdeskTicket::findOrFail($id);
 
         HelpdeskMessage::create([
             'helpdesk_ticket_id' => $ticket->id,
             'sender' => 'admin',
-            'message' => $request->message
+            'message' => $validated['message']
         ]);
 
         $ticket->update([

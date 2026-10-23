@@ -27,19 +27,7 @@ class CateringPackageController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_paket' => 'required',
-            'deskripsi' => 'required',
-            'harga' => 'required|numeric'
-        ]);
-
-        CateringPackage::create(
-            $request->only([
-                'nama_paket',
-                'deskripsi',
-                'harga'
-            ])
-        );
+        CateringPackage::create($this->validated($request));
 
         return redirect()
             ->route('admin.catering-packages.index')
@@ -61,21 +49,33 @@ class CateringPackageController extends Controller
         Request $request,
         CateringPackage $cateringPackage
     ) {
-        $cateringPackage->update([
-            'nama_paket' => $request->nama_paket,
-            'deskripsi' => $request->deskripsi,
-            'harga' => $request->harga
-        ]);
+        $cateringPackage->update($this->validated($request));
 
         return redirect()
             ->route('admin.catering-packages.index');
     }
 
+    private function validated(Request $request): array
+    {
+        return $request->validate([
+            'nama_paket' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'harga' => 'required|numeric|min:0',
+        ]);
+    }
+
     public function destroy(
         CateringPackage $cateringPackage
     ) {
+        if ($cateringPackage->orders()->exists()) {
+            return back()->with(
+                'error',
+                'Paket tidak dapat dihapus karena masih memiliki pesanan terkait.'
+            );
+        }
+
         $cateringPackage->delete();
 
-        return back();
+        return back()->with('success', 'Paket berhasil dihapus.');
     }
 }
